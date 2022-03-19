@@ -22,6 +22,14 @@ namespace IRentBook.Controllers
         {
             return View();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login()
+        {
+            //Acá va la logica del login
+            return RedirectToAction("Admin");
+            //hace falta redireccionar a la de usuario
+        }
 
         public IActionResult Privacy()
         {
