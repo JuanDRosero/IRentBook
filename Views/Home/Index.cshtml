@@ -1,8 +1,35 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Login";
+    Layout = null;
 }
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - IRentBook</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/login.css" rel="stylesheet">
+</head>
+<body class="text-center">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <main class="form-signin">
+        <form method="post" asp-action="Login">
+            <img class="mb-4" src="~/img/logo.png" alt="" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal">IRentBook</h1>
+
+            <div class="form-floating">
+                <input type="email" class="form-control" id="floatingInput" name="correo" placeholder="name@example.com">
+                <label for="floatingInput">Código de usuario</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
+                <label for="floatingPassword">Contraseña</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-secondary" type="submit">Iniciar sesion</button>
+        </form>
+    </main>
+</body>
+</html>

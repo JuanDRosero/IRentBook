@@ -24,10 +24,10 @@ namespace IRentBook.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login()
+        public IActionResult Login( string name, string password)
         {
             //Acá va la logica del login
-            return RedirectToAction("Admin");
+            return RedirectToAction("Index","Admin");//-> Hay que redirigir al controlador
             //hace falta redireccionar a la de usuario
         }
 
