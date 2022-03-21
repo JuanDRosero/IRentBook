@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IRentBook.Models.Proxy.ProxyPelicula;
 using IRentBook.Models.Proxy.ProxyLibros;
+using IRentBook.Models.Patron_Comando;
 
 namespace IRentBook.Controllers
 {
@@ -50,14 +51,10 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind("id,nombre,genero, paginas,autores")]Libro libro)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            IComando agregarLibro = new AgregarLibro(libro);
+            ControlInventario invocador = new ControlInventario(agregarLibro,null,null);
+            invocador.agregarProducto();
+            return RedirectToAction("Index");
         }
 
         // GET: Productos/Edit/5
@@ -69,7 +66,14 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            return View();
+            MetodosLibro ml = new MetodosLibro();
+            List<Libro> libros = ml.leerLibros();
+            Libro libro =libros.Where(e=>e.id==id).FirstOrDefault();
+            if (libro!=null)
+            {
+                return View(libro);
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: Productos/Edit/5
@@ -77,14 +81,13 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind("id,nombre,genero, paginas,autores")] Libro libro)
         {
-            try
+            if (libro != null)
             {
-                return RedirectToAction(nameof(Index));
+                IComando editarLibro = new EditarLibro(libro);
+                ControlInventario invocador = new ControlInventario(null,editarLibro,null);
+                invocador.editarProducto();
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: Productos/Delete/5
@@ -97,7 +100,13 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            return View();
+            MetodosLibro ml = new MetodosLibro();
+            List<Libro> libros = ml.leerLibros();
+            Libro libro = libros.Where(e => e.id == id).FirstOrDefault();
+            IComando eliminarLibro = new EliminarLibro(libro);
+            ControlInventario invocador = new ControlInventario(null,null, eliminarLibro);
+            invocador.eliminarProducto();
+            return RedirectToAction("Index");
         }
     }
 }
