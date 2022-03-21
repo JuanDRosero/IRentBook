@@ -10,23 +10,20 @@ using IRentBook.Models.Proxy.ProxyLibros;
 
 namespace IRentBook.Controllers
 {
-    public class Productos : Controller
+    public class Libros : Controller
     {
         // GET: Productos
         public ActionResult Index()
         {
-
+            //Index de libros
             var rol = HttpContext.Session.GetString("Rol");
             if (rol.Equals(""))
             {
                 return RedirectToActionPermanent("Index", "Home");
             }
-            MetodosPeliculas mp = new MetodosPeliculas();
             MetodosLibro ml = new MetodosLibro();
-            var modelo = new ModelProductoView();
-            modelo.libros = ml.leerLibros();
-            modelo.peliculas = mp.leerPeliculas();
-            return View(modelo);
+            List<Libro> libros = ml.leerLibros();
+            return View(libros);
         }
 
         // GET: Productos/Details/5

@@ -1,4 +1,4 @@
-﻿@model IRentBook.Models.ModelProductoView;
+﻿@model IRentBook.Models.ModelProductoView
 @using Microsoft.AspNetCore.Http;
 @{
     ViewBag.title = "Productos";
@@ -18,7 +18,7 @@
     <table class="table table-hover">
         <thead>
             <tr class="table-dark">
-                <th scope="col">#</th>
+                <th scope="col">@Html.DisplayNameFor(model.libros =>model.libros.id)</th>
                 <th scope="col">Nombre del libro</th>
                 <th>Genero</th>
                 <th scope="col">Director</th>
