@@ -7,8 +7,8 @@ namespace IRentBook.Models
 {
     public class Libro: Producto
     {
-        public int paginas { private get; set; }
-        public  string autores { private get; set; }
+        public int paginas { get; set; }
+        public  string autores { get; set; }
 
         public override string getAutor()
         {

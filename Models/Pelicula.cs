@@ -7,8 +7,8 @@ namespace IRentBook.Models
 {
     public class Pelicula : Producto
     {
-        public int duracion { private get; set; }
-        public string director {  private get; set; }
+        public int duracion { get; set; }
+        public string director {  get; set; }
         public override string getAutor()
         {
             return director;
