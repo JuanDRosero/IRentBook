@@ -42,8 +42,7 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            Libro libro = null;
-            return View(libro);
+            return View();
         }
 
         // POST: Productos/Create

@@ -62,7 +62,7 @@ namespace IRentBook.Models.Proxy.ProxyGenero
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
             string command = "SELECT * FROM pruebas.genero;";
-            List<Genero> listaUsuarios = new List<Genero>();
+            List<Genero> listaGenero = new List<Genero>();
             var conexion = cadena.connection;
             try
             {
@@ -71,7 +71,7 @@ namespace IRentBook.Models.Proxy.ProxyGenero
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
                 while (mySqlDataReader.Read())
                 {
-                    listaUsuarios.Add(new Genero
+                    listaGenero.Add(new Genero
                     {
                         id = Int32.Parse(mySqlDataReader[0].ToString()),
                         nombre = mySqlDataReader[1].ToString(),
@@ -86,7 +86,7 @@ namespace IRentBook.Models.Proxy.ProxyGenero
                 Console.WriteLine(ex.ToString());
             }
             conexion.Close();
-            return listaUsuarios;
+            return listaGenero;
         }
     }
 }

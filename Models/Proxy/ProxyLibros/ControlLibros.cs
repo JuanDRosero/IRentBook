@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IRentBook.Models;
+using IRentBook.Models.Proxy.ProxyGenero;
 
 
 namespace IRentBook.Models.Proxy.ProxyLibros
@@ -71,6 +72,7 @@ namespace IRentBook.Models.Proxy.ProxyLibros
                 conexion.Open();
                 MySqlCommand mySqlCommand = new MySqlCommand(command, conexion);
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
+                MetodosGenero metodosGenero = new MetodosGenero();
                 while (mySqlDataReader.Read())
                 {
                     listaLibros.Add(new Libro

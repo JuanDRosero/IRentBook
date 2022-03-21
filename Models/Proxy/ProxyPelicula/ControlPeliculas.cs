@@ -62,7 +62,7 @@ namespace IRentBook.Models.Proxy.ProxyPelicula
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
             string command = "SELECT * FROM pruebas.pelicula;";
-            List<Pelicula> listaUsuarios = new List<Pelicula>();
+            List<Pelicula> listaPelicula = new List<Pelicula>();
             var conexion = cadena.connection;
             try
             {
@@ -71,12 +71,13 @@ namespace IRentBook.Models.Proxy.ProxyPelicula
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
                 while (mySqlDataReader.Read())
                 {
-                    listaUsuarios.Add(new Pelicula
+                    listaPelicula.Add(new Pelicula
                     {
                         id = Int32.Parse(mySqlDataReader[0].ToString()),
-                        nombre = mySqlDataReader[1].ToString(),
-                        duracion = Int32.Parse(mySqlDataReader[2].ToString()),
-                        director = mySqlDataReader[3].ToString(),
+                        genero = mySqlDataReader[1].ToString(),
+                        nombre = mySqlDataReader[2].ToString(),
+                        duracion = Int32.Parse(mySqlDataReader[3].ToString()),
+                        director = mySqlDataReader[4].ToString(),
                     });
                     //Console.WriteLine(mySqlDataReader[0] + "--" + mySqlDataReader[1]);
                 }
@@ -87,7 +88,7 @@ namespace IRentBook.Models.Proxy.ProxyPelicula
                 Console.WriteLine(ex.ToString());
             }
             conexion.Close();
-            return listaUsuarios;
+            return listaPelicula;
         }
     }
 }
