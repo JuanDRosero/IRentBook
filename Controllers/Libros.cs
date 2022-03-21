@@ -97,7 +97,6 @@ namespace IRentBook.Controllers
         }
 
         // GET: Productos/Delete/5
-        [HttpDelete]
         public ActionResult Delete(int id)
         {
             var rol = HttpContext.Session.GetString("Rol");

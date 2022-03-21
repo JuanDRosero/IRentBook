@@ -15,8 +15,10 @@ namespace IRentBook.Models.Proxy.ProxyLibros
         public override void agregarLibro(Libro libro)
         {
             //Intancia del singlenton
+            MetodosGenero mg = new MetodosGenero();
+            List<Genero> listaGeneros = mg.leerGenero();
             var cadena = ConexionBD.Instance;
-            string command = "INSERT INTO `proyectopatrones`.`libro` (`id_GeneroL`, `NombreLibro`, `NumPaginas`, `Autor`) VALUES ('" + libro.genero + "', '" + libro.nombre + "', '" + libro.paginas + "', '" + libro.autores + "');";
+            string command = "INSERT INTO `proyectopatrones`.`libro` (`id_GeneroL`, `NombreLibro`, `NumPaginas`, `Autor`) VALUES ('" + listaGeneros.Where(e=>e.nombre == libro.genero).FirstOrDefault().id + "', '" + libro.nombre + "', '" + libro.paginas + "', '" + libro.autores + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -31,8 +33,10 @@ namespace IRentBook.Models.Proxy.ProxyLibros
         public override void editarLibro(Libro libro)
         {
             //Intancia del singlenton
+            MetodosGenero mg = new MetodosGenero();
+            List<Genero> listaGeneros = mg.leerGenero();
             var cadena = ConexionBD.Instance;
-            string command = "UPDATE `proyectopatrones`.`libro` SET `id_GeneroL` = '" + libro.genero + "', `NombreLibro` = '" + libro.nombre + "', `NumPaginas` = '" + libro.paginas + "', `Autor` = '" + libro.autores + "' WHERE (`idLibro` = '" + libro.id + "');";
+            string command = "UPDATE `proyectopatrones`.`libro` SET `id_GeneroL` = '" + listaGeneros.Where(e => e.nombre == libro.genero).FirstOrDefault().id + "', `NombreLibro` = '" + libro.nombre + "', `NumPaginas` = '" + libro.paginas + "', `Autor` = '" + libro.autores + "' WHERE (`idLibro` = '" + libro.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
