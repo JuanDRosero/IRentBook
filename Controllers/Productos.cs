@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IRentBook.Models.Proxy.ProxyPelicula;
+using IRentBook.Models.Proxy.ProxyLibros;
 
 namespace IRentBook.Controllers
 {
@@ -19,7 +21,12 @@ namespace IRentBook.Controllers
             {
                 return RedirectToActionPermanent("Index", "Home");
             }
-            return View();
+            MetodosPeliculas mp = new MetodosPeliculas();
+            MetodosLibro ml = new MetodosLibro();
+            var modelo = new ModelProductoView();
+            modelo.libros = ml.leerLibros();
+            modelo.peliculas = mp.leerPeliculas();
+            return View(modelo);
         }
 
         // GET: Productos/Details/5
