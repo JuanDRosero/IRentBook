@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IRentBook.Models;
+
 
 namespace IRentBook.Models.Proxy.ProxyLibros
 {
@@ -62,7 +64,7 @@ namespace IRentBook.Models.Proxy.ProxyLibros
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
             string command = "SELECT * FROM pruebas.libro;";
-            List<Libro> listaUsuarios = new List<Libro>();
+            List<Libro> listaLibros = new List<Libro>();
             var conexion = cadena.connection;
             try
             {
@@ -71,12 +73,14 @@ namespace IRentBook.Models.Proxy.ProxyLibros
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
                 while (mySqlDataReader.Read())
                 {
-                    listaUsuarios.Add(new Libro
+                    listaLibros.Add(new Libro
                     {
                         id = Int32.Parse(mySqlDataReader[0].ToString()),
-                        nombre = mySqlDataReader[1].ToString(),
-                        paginas = Int32.Parse(mySqlDataReader[2].ToString()),
-                        autores = mySqlDataReader[3].ToString(),
+                        genero = mySqlDataReader[1].ToString(),
+                        nombre = mySqlDataReader[2].ToString(),
+                        paginas = Int32.Parse(mySqlDataReader[3].ToString()),
+                        autores = mySqlDataReader[4].ToString()
+                        
                     });
                     //Console.WriteLine(mySqlDataReader[0] + "--" + mySqlDataReader[1]);
                 }
@@ -87,7 +91,7 @@ namespace IRentBook.Models.Proxy.ProxyLibros
                 Console.WriteLine(ex.ToString());
             }
             conexion.Close();
-            return listaUsuarios;
+            return listaLibros;
         }
     }
 }
