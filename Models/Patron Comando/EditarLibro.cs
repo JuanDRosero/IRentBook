@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace IRentBook.Models.Patron_Comando
 {
-    public class EditarInventario
+    public class EditarLibro
     {
-        private Producto producto { get; set; }
-        public EditarInventario(Producto producto)
+        private Libro producto { get; set; }
+        public EditarLibro(Libro producto)
         {
             this.producto = producto;
         }

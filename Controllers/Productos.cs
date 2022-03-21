@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using IRentBook.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace IRentBook.Controllers
         // GET: Productos
         public ActionResult Index()
         {
+
             var rol = HttpContext.Session.GetString("Rol");
             if (rol.Equals(""))
             {
@@ -29,13 +31,20 @@ namespace IRentBook.Controllers
         // GET: Productos/Create
         public ActionResult CrearPelicula()
         {
-            return View();
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!rol.Equals("Admin"))
+            {
+                //Un usuario no puede usar este metodo
+                return RedirectToActionPermanent("Index", "Home");
+            }
+            Pelicula pelicula = null ;//Aca hay que inicializar la lista de generos
+            return View(pelicula);
         }
 
         // POST: Productos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CrearPelicula(IFormCollection collection)
+        public ActionResult CrearPelicula([Bind("id,nombre,genero,duracion,director")]Pelicula pelicula)
         {
             try
             {
@@ -50,13 +59,19 @@ namespace IRentBook.Controllers
         // GET: Productos/Edit/5
         public ActionResult EditarPelicula(int id)
         {
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!rol.Equals("Admin"))
+            {
+                //Un usuario no puede usar este metodo
+                return RedirectToActionPermanent("Index", "Home");
+            }
             return View();
         }
 
         // POST: Productos/Edit/5
         [HttpPut]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarPelicula(int id, IFormCollection collection)
+        public ActionResult EditarPelicula([Bind("id,nombre,genero,duracion,director")] Pelicula pelicula)
         {
             try
             {
@@ -72,18 +87,31 @@ namespace IRentBook.Controllers
         [HttpDelete]
         public ActionResult BorrarPelicula(int id)
         {
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!rol.Equals("Admin"))
+            {
+                //Un usuario no puede usar este metodo
+                return RedirectToActionPermanent("Index", "Home");
+            }
             return View();
         }
         // GET: Productos/Create
         public ActionResult CrearLibro()
         {
-            return View();
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!rol.Equals("Admin"))
+            {
+                //Un usuario no puede usar este metodo
+                return RedirectToActionPermanent("Index", "Home");
+            }
+            Libro libro = null;
+            return View(libro);
         }
 
         // POST: Productos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CrearLibro(IFormCollection collection)
+        public ActionResult CrearLibro([Bind("id,nombre,genero, duracion,director")]Pelicula pelicula)
         {
             try
             {
@@ -98,13 +126,19 @@ namespace IRentBook.Controllers
         // GET: Productos/Edit/5
         public ActionResult EditarLibro(int id)
         {
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!rol.Equals("Admin"))
+            {
+                //Un usuario no puede usar este metodo
+                return RedirectToActionPermanent("Index", "Home");
+            }
             return View();
         }
 
         // POST: Productos/Edit/5
         [HttpPut]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarLibro(int id, IFormCollection collection)
+        public ActionResult EditarLibro([Bind("id,nombre,genero, duracion,director")] Pelicula pelicula)
         {
             try
             {
@@ -120,6 +154,12 @@ namespace IRentBook.Controllers
         [HttpDelete]
         public ActionResult BorrarLibro(int id)
         {
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!rol.Equals("Admin"))
+            {
+                //Un usuario no puede usar este metodo
+                return RedirectToActionPermanent("Index", "Home");
+            }
             return View();
         }
     }

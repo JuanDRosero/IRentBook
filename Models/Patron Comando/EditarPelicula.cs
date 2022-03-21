@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 
 namespace IRentBook.Models.Patron_Comando
 {
-    public class AgregarInventario:IComando
+    public class EditarPelicula
     {
-        private  Producto producto { get; set; }
-        public AgregarInventario(Producto producto)
+        private Pelicula producto { get; set; }
+        public EditarPelicula(Pelicula producto)
         {
             this.producto = producto;
         }
         public bool ejecutar()
         {
-            //Aca va la logica de agregar u producto
+            //Aca va la logica de editar producto
             return true;
         }
     }
 }
-//https://es.wikipedia.org/wiki/Command_(patr%C3%B3n_de_dise%C3%B1o)
