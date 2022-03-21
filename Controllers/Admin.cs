@@ -26,6 +26,10 @@ namespace IRentBook.Controllers
         {
             return View(); //Hay que Remitir al controlador
         }
+        public ActionResult LogOut()
+        {
+            return RedirectToActionPermanent("Index", "Home");
+        }
     }
 }
 //Post: Crear

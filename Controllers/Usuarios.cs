@@ -12,7 +12,7 @@ namespace IRentBook.Controllers
         // GET: Usuarios
         public ActionResult Index()
         {
-            return View();
+            return View();  //Hay que pasarle como parametros los usuarios
         }
 
         // GET: Usuarios/Details/5
@@ -30,16 +30,13 @@ namespace IRentBook.Controllers
         // POST: Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create([Bind("id,codigo,nombre,pass,direccion")]Usuario usuario)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            if (!ModelState.IsValid)    //Revisar pq no está validando el modelo
             {
                 return View();
             }
+            return RedirectToAction("Index");
         }
 
         // GET: Usuarios/Edit/5
@@ -49,7 +46,7 @@ namespace IRentBook.Controllers
         }
 
         // POST: Usuarios/Edit/5
-        [HttpPut]
+        [HttpPut]   //->Revisar como se pine el parametro put en los form
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
@@ -63,7 +60,7 @@ namespace IRentBook.Controllers
             }
         }
 
-        [HttpDelete]
+        //[HttpDelete]
         // GET: Usuarios/Delete/5
         public ActionResult Delete(int id)
         {

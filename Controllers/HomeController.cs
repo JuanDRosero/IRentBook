@@ -26,8 +26,20 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login( string name, string password)
         {
-            //Acá va la logica del login
-            return RedirectToAction("Index","Admin");//-> Hay que redirigir al controlador
+            if (password.Equals("123456789"))   //Redirige a la vista de usuario
+            {
+                return RedirectToAction("Index", "Usuario");
+            }
+            else if (password.Equals("987654321"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+            else
+            {
+                _logger.LogInformation("No se ingreso un valor valido");
+                return RedirectToAction("Index");
+            }
+            
             //hace falta redireccionar a la de usuario
         }
 
