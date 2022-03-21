@@ -13,7 +13,7 @@ namespace IRentBook.Models.Proxy.ProxyEmpleados
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "INSERT INTO `pruebas`.`empleado` (`CodLoginEmpleado`, `ContraEmpleado`, `NombreEmpleado`) VALUES ('" + persona.codigo + "', '" + persona.pass + "', '" + persona.nombre + "');";
+            string command = "INSERT INTO `proyectopatrones`.`empleado` (`CodLoginEmpleado`, `ContraEmpleado`, `NombreEmpleado`) VALUES ('" + persona.codigo + "', '" + persona.pass + "', '" + persona.nombre + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -29,7 +29,7 @@ namespace IRentBook.Models.Proxy.ProxyEmpleados
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "UPDATE `pruebas`.`empleado` SET `CodLoginEmpleado` = '" + persona.codigo + "', `ContraEmpleado` = '" + persona.pass + "', `NombreEmpleado` = '" + persona.nombre + "' WHERE (`idEmpleado` = '" + persona.id + "');";
+            string command = "UPDATE `proyectopatrones`.`empleado` SET `CodLoginEmpleado` = '" + persona.codigo + "', `ContraEmpleado` = '" + persona.pass + "', `NombreEmpleado` = '" + persona.nombre + "' WHERE (`idEmpleado` = '" + persona.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -45,7 +45,7 @@ namespace IRentBook.Models.Proxy.ProxyEmpleados
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "DELETE FROM `pruebas`.`empleado` WHERE (`idEmpleado` = '" + persona.id + "');";
+            string command = "DELETE FROM `proyectopatrones`.`empleado` WHERE (`idEmpleado` = '" + persona.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -61,8 +61,8 @@ namespace IRentBook.Models.Proxy.ProxyEmpleados
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "SELECT * FROM pruebas.usuario;";
-            List<Persona> listaUsuarios = new List<Persona>();
+            string command = "SELECT * FROM proyectopatrones.usuario;";
+            List<Persona> listaEmpleados = new List<Persona>();
             var conexion = cadena.connection;
             try
             {
@@ -71,7 +71,7 @@ namespace IRentBook.Models.Proxy.ProxyEmpleados
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
                 while (mySqlDataReader.Read())
                 {
-                    listaUsuarios.Add(new Persona
+                    listaEmpleados.Add(new Persona
                     {
                         id = Int32.Parse(mySqlDataReader[0].ToString()),
                         codigo = Int32.Parse(mySqlDataReader[1].ToString()),
@@ -87,7 +87,7 @@ namespace IRentBook.Models.Proxy.ProxyEmpleados
                 Console.WriteLine(ex.ToString());
             }
             conexion.Close();
-            return listaUsuarios;
+            return listaEmpleados;
         }
     }
 }

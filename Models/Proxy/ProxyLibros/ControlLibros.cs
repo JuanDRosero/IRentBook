@@ -16,7 +16,7 @@ namespace IRentBook.Models.Proxy.ProxyLibros
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "INSERT INTO `pruebas`.`libro` (`id_GeneroL`, `NombreLibro`, `NumPaginas`, `Autor`) VALUES ('" + libro.genero + "', '" + libro.nombre + "', '" + libro.paginas + "', '" + libro.autores + "');";
+            string command = "INSERT INTO `proyectopatrones`.`libro` (`id_GeneroL`, `NombreLibro`, `NumPaginas`, `Autor`) VALUES ('" + libro.genero + "', '" + libro.nombre + "', '" + libro.paginas + "', '" + libro.autores + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -32,7 +32,7 @@ namespace IRentBook.Models.Proxy.ProxyLibros
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "UPDATE `pruebas`.`libro` SET `id_GeneroL` = '" + libro.genero + "', `NombreLibro` = '" + libro.nombre + "', `NumPaginas` = '" + libro.paginas + "', `Autor` = '" + libro.autores + "' WHERE (`idLibro` = '" + libro.id + "');";
+            string command = "UPDATE `proyectopatrones`.`libro` SET `id_GeneroL` = '" + libro.genero + "', `NombreLibro` = '" + libro.nombre + "', `NumPaginas` = '" + libro.paginas + "', `Autor` = '" + libro.autores + "' WHERE (`idLibro` = '" + libro.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -48,7 +48,7 @@ namespace IRentBook.Models.Proxy.ProxyLibros
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "DELETE FROM `pruebas`.`libro` WHERE (`idLibro` = '" + libro.id + "');";
+            string command = "DELETE FROM `proyectopatrones`.`libro` WHERE (`idLibro` = '" + libro.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -64,7 +64,7 @@ namespace IRentBook.Models.Proxy.ProxyLibros
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "SELECT * FROM pruebas.libro;";
+            string command = "SELECT * FROM proyectopatrones.libro;";
             List<Libro> listaLibros = new List<Libro>();
             var conexion = cadena.connection;
             try

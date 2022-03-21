@@ -13,7 +13,7 @@ namespace IRentBook.Models.Proxy.ProxyGenero
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "INSERT INTO `pruebas`.`genero` (`NombreGenero`, `Descripcion`) VALUES ('" + genero.nombre + "', '" + genero.descripcion + "');";
+            string command = "INSERT INTO `proyectopatrones`.`genero` (`NombreGenero`, `Descripcion`) VALUES ('" + genero.nombre + "', '" + genero.descripcion + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -29,7 +29,7 @@ namespace IRentBook.Models.Proxy.ProxyGenero
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "UPDATE `pruebas`.`genero` SET `NombreGenero` = '" + genero.nombre + "', `Descripcion` = '" + genero.descripcion + "' WHERE (`idGenero` = '" + genero.id + "');";
+            string command = "UPDATE `proyectopatrones`.`genero` SET `NombreGenero` = '" + genero.nombre + "', `Descripcion` = '" + genero.descripcion + "' WHERE (`idGenero` = '" + genero.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -45,7 +45,7 @@ namespace IRentBook.Models.Proxy.ProxyGenero
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "DELETE FROM `pruebas`.`genero` WHERE (`idGenero` = '" + genero.id + "');";
+            string command = "DELETE FROM `proyectopatrones`.`genero` WHERE (`idGenero` = '" + genero.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -61,7 +61,7 @@ namespace IRentBook.Models.Proxy.ProxyGenero
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "SELECT * FROM pruebas.genero;";
+            string command = "SELECT * FROM proyectopatrones.genero;";
             List<Genero> listaGenero = new List<Genero>();
             var conexion = cadena.connection;
             try

@@ -12,7 +12,7 @@ namespace IRentBook.Models.Singleton
         private static MySqlConnection sqlConnection;
         private ConexionBD()
         {
-            sqlConnection = new MySqlConnection("user id=root;password=root;server=localhost;database=pruebas");
+            sqlConnection = new MySqlConnection("user id=root;password=root;server=localhost;database=proyectopatrones");
         }
 
         public MySqlConnection connection

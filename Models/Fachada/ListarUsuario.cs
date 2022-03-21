@@ -14,7 +14,7 @@ namespace IRentBook.Models.Fachada
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "SELECT * FROM pruebas.usuario;";
+            string command = "SELECT * FROM proyectopatrones.usuario;";
             List<Usuario> listaUsuarios = new List<Usuario>();
             var conexion = cadena.connection;
             try

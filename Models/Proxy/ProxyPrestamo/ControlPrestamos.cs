@@ -13,7 +13,7 @@ namespace IRentBook.Models.Proxy.ProxyPrestamo
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "INSERT INTO `pruebas`.`prestamo` (`idLibroP`, `idPeliculaP`, `NombreLibro`, `NombreUsuario`, `DirecEmpleado`) VALUES ('" + prestamo.idLibroP + "', '" + prestamo.idPeliculaP + "', '" + prestamo.nombreProducto + "', '" + prestamo.nombreUsuario + "', '" + prestamo.direccionUsuario + "');";
+            string command = "INSERT INTO prestamo (idPrestamo, idLibroP, idPeliculaP, idUsuario) VALUES ('"+prestamo.idPrestamo+"', '"+prestamo.idLibroP+"', '"+prestamo.idPeliculaP+"', '"+prestamo.idUsuario+"')";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -29,7 +29,7 @@ namespace IRentBook.Models.Proxy.ProxyPrestamo
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "UPDATE `pruebas`.`prestamo` SET `idLibroP` = '" + prestamo.idLibroP + "', `idPeliculaP` = '" + prestamo.idPeliculaP + "', `NombreLibro` = '" + prestamo.nombreProducto + "', `NombreUsuario` = '" + prestamo.nombreUsuario + "', `DirecEmpleado` = '" + prestamo.direccionUsuario + "' WHERE (`idPrestamo` = '" + prestamo.idPrestamo + "');";
+            string command = "UPDATE `proyectopatrones`.`prestamo` SET `idLibroP` = '" + prestamo.idLibroP + "', `idPeliculaP` = '" + prestamo.idPeliculaP + "', `idUsuario` = '" + prestamo.idUsuario + "' WHERE (`idPrestamo` = '" + prestamo.idPrestamo + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -45,7 +45,7 @@ namespace IRentBook.Models.Proxy.ProxyPrestamo
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "DELETE FROM `pruebas`.`prestamo` WHERE (`idPrestamo` = '" + prestamo.idPrestamo + "');";
+            string command = "DELETE FROM `proyectopatrones`.`prestamo` WHERE (`idPrestamo` = '" + prestamo.idPrestamo + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -61,8 +61,8 @@ namespace IRentBook.Models.Proxy.ProxyPrestamo
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "SELECT * FROM pruebas.prestamo;";
-            List<Prestamo> listaUsuarios = new List<Prestamo>();
+            string command = "SELECT * FROM proyectopatrones.usuario;";
+            List<Prestamo> listaPrestamo = new List<Prestamo>();
             var conexion = cadena.connection;
             try
             {
@@ -71,14 +71,12 @@ namespace IRentBook.Models.Proxy.ProxyPrestamo
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
                 while (mySqlDataReader.Read())
                 {
-                    listaUsuarios.Add(new Prestamo
+                    listaPrestamo.Add(new Prestamo
                     {
                         idPrestamo = Int32.Parse(mySqlDataReader[0].ToString()),
                         idLibroP = Int32.Parse(mySqlDataReader[1].ToString()),
                         idPeliculaP = Int32.Parse(mySqlDataReader[2].ToString()),
-                        nombreProducto = mySqlDataReader[3].ToString(),
-                        nombreUsuario = mySqlDataReader[4].ToString(),
-                        direccionUsuario = mySqlDataReader[5].ToString()
+                        idUsuario = Int32.Parse(mySqlDataReader[3].ToString())
                     });
                     //Console.WriteLine(mySqlDataReader[0] + "--" + mySqlDataReader[1]);
                 }
@@ -89,7 +87,7 @@ namespace IRentBook.Models.Proxy.ProxyPrestamo
                 Console.WriteLine(ex.ToString());
             }
             conexion.Close();
-            return listaUsuarios;
+            return listaPrestamo;
         }
     }
 }

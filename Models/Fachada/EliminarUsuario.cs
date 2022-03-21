@@ -13,7 +13,7 @@ namespace IRentBook.Models.Fachada
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "DELETE FROM `pruebas`.`usuario` WHERE (`idUsuario` = '" + usuario.id + "');";
+            string command = "DELETE FROM `proyectopatrones`.`usuario` WHERE (`idUsuario` = '" + usuario.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))

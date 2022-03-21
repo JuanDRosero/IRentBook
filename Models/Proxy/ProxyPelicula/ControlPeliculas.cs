@@ -13,7 +13,7 @@ namespace IRentBook.Models.Proxy.ProxyPelicula
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "INSERT INTO `pruebas`.`pelicula` (`id_GeneroP`, `NombrePelicula`, `Duracion`, `Director`) VALUES ('" + pelicula.genero + "', '" + pelicula.nombre + "', '" + pelicula.duracion + "', '" + pelicula.director + "');";
+            string command = "INSERT INTO `proyectopatrones`.`pelicula` (`id_GeneroP`, `NombrePelicula`, `Duracion`, `Director`) VALUES ('" + pelicula.genero + "', '" + pelicula.nombre + "', '" + pelicula.duracion + "', '" + pelicula.director + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -29,7 +29,7 @@ namespace IRentBook.Models.Proxy.ProxyPelicula
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "UPDATE `pruebas`.`pelicula` SET `id_GeneroP` = '" + pelicula.genero + "', `NombrePelicula` = '" + pelicula.nombre + "', `Duracion` = '" + pelicula.duracion + "', `Director` = '" + pelicula.director + "' WHERE (`idPelicula` = '" + pelicula.id + "');";
+            string command = "UPDATE `proyectopatrones`.`pelicula` SET `id_GeneroP` = '" + pelicula.genero + "', `NombrePelicula` = '" + pelicula.nombre + "', `Duracion` = '" + pelicula.duracion + "', `Director` = '" + pelicula.director + "' WHERE (`idPelicula` = '" + pelicula.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -45,7 +45,7 @@ namespace IRentBook.Models.Proxy.ProxyPelicula
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "DELETE FROM `pruebas`.`pelicula` WHERE (`idPelicula` = '" + pelicula.id + "');";
+            string command = "DELETE FROM `proyectopatrones`.`pelicula` WHERE (`idPelicula` = '" + pelicula.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
@@ -61,7 +61,7 @@ namespace IRentBook.Models.Proxy.ProxyPelicula
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "SELECT * FROM pruebas.pelicula;";
+            string command = "SELECT * FROM proyectopatrones.prestamo;";
             List<Pelicula> listaPelicula = new List<Pelicula>();
             var conexion = cadena.connection;
             try

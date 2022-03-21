@@ -45,6 +45,7 @@ namespace IRentBook.Controllers
             }
             var libro = new Libro();
             var mg = new MetodosGenero();
+            var listaG = mg.leerGenero();
             libro.listaGeneros=new Microsoft.AspNetCore.Mvc.Rendering.SelectList(mg.leerGenero());
             return View(libro);
         }
