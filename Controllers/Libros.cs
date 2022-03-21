@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IRentBook.Models.Proxy.ProxyPelicula;
 using IRentBook.Models.Proxy.ProxyLibros;
+using IRentBook.Models.Proxy.ProxyGenero;
 using IRentBook.Models.Patron_Comando;
 
 namespace IRentBook.Controllers
@@ -42,7 +43,10 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            return View();
+            var libro = new Libro();
+            var mg = new MetodosGenero();
+            libro.listaGeneros=new Microsoft.AspNetCore.Mvc.Rendering.SelectList(mg.leerGenero());
+            return View(libro);
         }
 
         // POST: Productos/Create
