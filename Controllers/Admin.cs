@@ -13,6 +13,11 @@ namespace IRentBook.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+           var rol = HttpContext.Session.GetString("Rol");
+            if (!rol.Equals("Admin"))
+            {
+                return RedirectToActionPermanent("Index", "Home");
+            }
             return View();
         }
         //Get: Inventario
@@ -28,7 +33,7 @@ namespace IRentBook.Controllers
         }
         public ActionResult LogOut()
         {
-            return RedirectToActionPermanent("Index", "Home");
+            return RedirectToActionPermanent("Index", "Home",true);
         }
     }
 }

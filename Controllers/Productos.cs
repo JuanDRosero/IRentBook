@@ -12,7 +12,11 @@ namespace IRentBook.Controllers
         // GET: Productos
         public ActionResult Index()
         {
-            //Hay que añadir logica para que pueda filtart por solo peliculas, libros o generos
+            var rol = HttpContext.Session.GetString("Rol");
+            if (rol.Equals(""))
+            {
+                return RedirectToActionPermanent("Index", "Home");
+            }
             return View();
         }
 

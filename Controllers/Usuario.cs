@@ -12,35 +12,14 @@ namespace IRentBook.Controllers
         // GET: Usuario
         public ActionResult Index()
         {
-            return View();
-        }
-
-        // GET: Prestamos
-        public ActionResult Prestamos()
-        {
-            return View();
-        }
-
-        // GET: Usuario/Create
-        public ActionResult AgregarPrestamo()
-        {
-            return View();
-        }
-
-        // POST: Usuario/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AgregarPrestamo(IFormCollection collection)
-        {
-            try
+            var rol = HttpContext.Session.GetString("Rol");
+            if (!rol.Equals("User"))
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToActionPermanent("Index", "Home");
             }
-            catch
-            {
-                return View();
-            }
+            return View();
         }
+
 
     }
 }

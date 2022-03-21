@@ -1,5 +1,13 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Http;
 @{
+    var rol = Context.Session.GetString("Rol");
+    if (rol.Equals("Admin"))
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout-Usuarios.cshtml";
+    }
 }
+<h1>Vista prestamos</h1>
