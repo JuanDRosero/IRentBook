@@ -45,8 +45,7 @@ namespace IRentBook.Controllers
             }
             var libro = new Libro();
             var mg = new MetodosGenero();
-            var listaG = mg.leerGenero();
-            libro.listaGeneros=new Microsoft.AspNetCore.Mvc.Rendering.SelectList(mg.leerGenero());
+            libro.listaGeneros=new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(mg));
             return View(libro);
         }
 
@@ -73,8 +72,11 @@ namespace IRentBook.Controllers
             MetodosLibro ml = new MetodosLibro();
             List<Libro> libros = ml.leerLibros();
             Libro libro =libros.Where(e=>e.id==id).FirstOrDefault();
+            
             if (libro!=null)
             {
+                var mg = new MetodosGenero();
+                libro.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(mg));
                 return View(libro);
             }
             return RedirectToAction("Index");
@@ -111,6 +113,18 @@ namespace IRentBook.Controllers
             ControlInventario invocador = new ControlInventario(null,null, eliminarLibro);
             invocador.eliminarProducto();
             return RedirectToAction("Index");
+        }
+        private List<String> getListaG(MetodosGenero mg)
+        {
+            List<Genero> lg = mg.leerGenero();
+            List<String> lista = new List<string>();
+            var consulta = from genero in lg
+                           select genero.nombre;
+            foreach (var item in consulta)
+            {
+                lista.Add(item);
+            }
+            return lista;
         }
     }
 }
