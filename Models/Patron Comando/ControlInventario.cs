@@ -16,17 +16,17 @@ namespace IRentBook.Models.Patron_Comando
             this.editarInv = editarInv;
             this.eliminarInv = eliminarInv;
         }
-        public bool agregarProducto()
+        public void agregarProducto()
         {
-            return agregarInv.ejecutar();
+            agregarInv.ejecutar();
         }
-        public bool editarProducto()
+        public void editarProducto()
         {
-            return editarInv.ejecutar();
+            editarInv.ejecutar();
         }
-        public bool eliminarProducto()
+        public void eliminarProducto()
         {
-            return eliminarInv.ejecutar();
+            eliminarInv.ejecutar();
         }
     }
 }

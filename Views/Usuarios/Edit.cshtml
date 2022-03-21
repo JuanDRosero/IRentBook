@@ -3,7 +3,7 @@
     ViewData["Title"] = "Editar Usuario";
 }
 <div>
-    <form class="row g-3" asp-action="Edit">
+    <form class="row g-3" asp-action="Edit" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="col-md-6">
             <label asp-for="nombre" class="form-label"></label>
@@ -39,7 +39,7 @@
                         <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
                     </svg>
                 </span>
-                <input type="password" class="form-control" asp-for="pass" placeholder="***********">
+                <input asp-for="pass" type="password" class="form-control" placeholder="***********">
                 <span asp-validation-for="pass" class="text-danger"></span>
             </div>
         </div>

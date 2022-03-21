@@ -60,7 +60,7 @@ namespace IRentBook.Controllers
         }
 
         // POST: Usuarios/Edit/5
-        [HttpPut]   //->Revisar como se pine el parametro put en los form
+        [HttpPost]   //->Revisar como se pine el parametro put en los form
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind("id,codigo,nombre,pass,direccion")] IRentBook.Models.Usuario usuario)
         {

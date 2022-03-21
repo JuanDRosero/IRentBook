@@ -7,6 +7,6 @@ namespace IRentBook.Models.Patron_Comando
 {
     public interface IComando
     {
-        public bool ejecutar();
+        public void ejecutar();
     }
 }

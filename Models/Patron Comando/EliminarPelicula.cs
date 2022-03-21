@@ -6,19 +6,18 @@ using IRentBook.Models.Proxy.ProxyPelicula;
 
 namespace IRentBook.Models.Patron_Comando
 {
-    public class AgregarPelicula:IComando
+    public class EliminarPelicula : IComando
     {
-        private  Pelicula producto { get; set; }
-        public AgregarPelicula(Pelicula producto)
+        private Pelicula producto { get; set; }
+        public EliminarPelicula(Pelicula producto)
         {
             this.producto = producto;
         }
         public void ejecutar()
         {
-            //Aca va la logica de agregar u producto
+            //Aca va la logica de eliminar producto
             MetodosPeliculas metodosPeliculas = new MetodosPeliculas();
-            metodosPeliculas.agregarPelicula(producto);
+            metodosPeliculas.eliminarPelicula(producto);
         }
     }
 }
-//https://es.wikipedia.org/wiki/Command_(patr%C3%B3n_de_dise%C3%B1o)

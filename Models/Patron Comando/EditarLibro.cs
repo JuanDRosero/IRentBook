@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IRentBook.Models.Proxy.ProxyLibros;
 
 namespace IRentBook.Models.Patron_Comando
 {
@@ -12,10 +13,11 @@ namespace IRentBook.Models.Patron_Comando
         {
             this.producto = producto;
         }
-        public bool ejecutar()
+        public void ejecutar()
         {
             //Aca va la logica de editar producto
-            return true;
+            MetodosLibro metodosLibro = new MetodosLibro();
+            metodosLibro.editarLibro(producto);
         }
     }
 }
