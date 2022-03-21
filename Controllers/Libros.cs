@@ -24,7 +24,13 @@ namespace IRentBook.Controllers
                 return RedirectToActionPermanent("Index", "Home");
             }
             MetodosLibro ml = new MetodosLibro();
+            MetodosGenero mg = new MetodosGenero();
             List<Libro> libros = ml.leerLibros();
+            List<Genero> generos = mg.leerGenero();
+            foreach (var libro in libros)
+            {
+                libro.genero = generos.Where(e => e.id == Int32.Parse(libro.genero)).FirstOrDefault().nombre;
+            }
             return View(libros);
         }
 
