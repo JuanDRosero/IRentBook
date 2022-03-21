@@ -26,10 +26,11 @@
                             </svg>
                         </span>
                         <input asp-for="nombre" class="form-control" placeholder="El retrato de Dorian Gray">
+                        <span asp-validation-for="nombre" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="genero" class="form-label">Genero del libro</label>
+                    <label asp-for="genero" class="form-label"></label>
                     <div class="input-group has-validation">
                         <span class="input-group-text" id="validationServer01">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
@@ -37,8 +38,8 @@
                             </svg>
                         </span>
                         <select class="form-control" asp-for="genero" asp-items="Model.listaGeneros">
-
                         </select>
+                        <span asp-validation-for="genero" class="text-danger"></span>
                     </div>
 
                 </div>
@@ -51,6 +52,7 @@
                             </svg>
                         </span>
                         <input asp-for="paginas" class="form-control" aria-describedby="inputGroupPrepend3" placeholder="123" required>
+                        <span asp-validation-for="paginas" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -62,6 +64,7 @@
                             </svg>
                         </span>
                         <input asp-for="autores" class="form-control" id="validationServer03" placeholder="Francisco A" required>
+                        <span asp-validation-for="autores" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-12">
