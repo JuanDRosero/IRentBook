@@ -5,12 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Patron Factory\" />
+    <Compile Remove="Models\Patron Factory\**" />
+    <Content Remove="Models\Patron Factory\**" />
+    <EmbeddedResource Remove="Models\Patron Factory\**" />
+    <None Remove="Models\Patron Factory\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="MySql.Data" Version="8.0.28" />
   </ItemGroup>
 
 </Project>
