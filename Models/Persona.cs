@@ -11,6 +11,7 @@ namespace IRentBook.Models
     {
         public int id { get; set; }
         [Required(ErrorMessage ="El campo codigo es requerido")]
+        [DataType(DataType.PhoneNumber, ErrorMessage ="El valor de Codigo no es valido")]
         [DisplayName("Codigo")]
         public int codigo { get; set; }
         [Required(ErrorMessage = "El campo nombre es requerido")]
