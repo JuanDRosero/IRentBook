@@ -61,7 +61,7 @@ namespace IRentBook.Models.Proxy.ProxyPrestamo
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "SELECT * FROM proyectopatrones.usuario;";
+            string command = "SELECT * FROM proyectopatrones.prestamo;";
             List<Prestamo> listaPrestamo = new List<Prestamo>();
             var conexion = cadena.connection;
             try
@@ -71,13 +71,28 @@ namespace IRentBook.Models.Proxy.ProxyPrestamo
                 MySqlDataReader mySqlDataReader = mySqlCommand.ExecuteReader();
                 while (mySqlDataReader.Read())
                 {
-                    listaPrestamo.Add(new Prestamo
+                    var a = new Prestamo();
+                    a.idPrestamo = Int32.Parse(mySqlDataReader[0].ToString());
+                    try
                     {
-                        idPrestamo = Int32.Parse(mySqlDataReader[0].ToString()),
-                        idLibroP = Int32.Parse(mySqlDataReader[1].ToString()),
-                        idPeliculaP = Int32.Parse(mySqlDataReader[2].ToString()),
-                        idUsuario = Int32.Parse(mySqlDataReader[3].ToString())
-                    });
+                        a.idLibroP = Int32.Parse(mySqlDataReader[1].ToString());
+                    }
+                    catch (Exception)
+                    {
+
+                        a.idLibroP = null;
+                    }
+                    try
+                    {
+                        a.idPeliculaP = Int32.Parse(mySqlDataReader[2].ToString());
+                    }
+                    catch (Exception)
+                    {
+
+                        a.idPeliculaP = null;
+                    }
+                    a.idUsuario = Int32.Parse(mySqlDataReader[3].ToString());
+                    listaPrestamo.Add(a);
                     //Console.WriteLine(mySqlDataReader[0] + "--" + mySqlDataReader[1]);
                 }
                 mySqlDataReader.Close();
