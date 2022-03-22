@@ -23,7 +23,7 @@ namespace IRentBook.Models
 
         public override string getTamanio()
         {
-            return paginas.ToString();
+            return paginas.ToString()+" págs";
         }
     }
 }

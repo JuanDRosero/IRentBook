@@ -59,10 +59,13 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind("id,nombre,genero,duracion,director")] Pelicula pelicula)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             IComando agregarPelicula = new AgregarPelicula(pelicula);
             ControlInventario invocador = new ControlInventario(agregarPelicula, null, null);
             invocador.agregarProducto();
-
             return RedirectToAction("Index");
         }
 
@@ -73,8 +76,12 @@ namespace IRentBook.Controllers
             MetodosGenero metodosGenero = new MetodosGenero();
             var peliculas = metodosPeliculas.leerPeliculas();
             var pelicula = peliculas.Where(e=>e.id == id).FirstOrDefault();
-            pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(metodosGenero));
-            return View(pelicula);
+            if (pelicula!=null)
+            {
+                pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(metodosGenero));
+                return View(pelicula);
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: Peliculas/Edit/5
@@ -82,6 +89,10 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind("id,nombre,genero,duracion,director")] Pelicula pelicula)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             IComando editarPelicula = new EditarPelicula(pelicula);
             ControlInventario invocador = new ControlInventario(null, editarPelicula, null);
             invocador.editarProducto();
@@ -95,10 +106,12 @@ namespace IRentBook.Controllers
             MetodosPeliculas metodosPeliculas = new MetodosPeliculas();
             var peliculas = metodosPeliculas.leerPeliculas();
             var pelicula = peliculas.Where(e => e.id == id).FirstOrDefault();
-            IComando eliminarPelicula = new EliminarPelicula(pelicula);
-            ControlInventario invocador = new ControlInventario(null, null, eliminarPelicula);
-            invocador.eliminarProducto();
-
+            if (pelicula!=null)
+            {
+                IComando eliminarPelicula = new EliminarPelicula(pelicula);
+                ControlInventario invocador = new ControlInventario(null, null, eliminarPelicula);
+                invocador.eliminarProducto();
+            }
             return RedirectToAction("Index");
         }
 

@@ -60,6 +60,10 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind("id,nombre,genero, paginas,autores")]Libro libro)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             IComando agregarLibro = new AgregarLibro(libro);
             ControlInventario invocador = new ControlInventario(agregarLibro,null,null);
             invocador.agregarProducto();
@@ -93,7 +97,7 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind("id,nombre,genero, paginas,autores")] Libro libro)
         {
-            if (libro != null)
+            if (libro != null && ModelState.IsValid)
             {
                 IComando editarLibro = new EditarLibro(libro);
                 ControlInventario invocador = new ControlInventario(null,editarLibro,null);

@@ -1,16 +1,8 @@
 ﻿@model IRentBook.Models.Pelicula
 @using Microsoft.AspNetCore.Http;
 @{
-    ViewBag.title = "Peliculas";
-    var rol = Context.Session.GetString("Rol");
-    if (rol.Equals("Admin"))
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_Layout-Usuarios.cshtml";
-    }
+    ViewBag.title = "Agregar Peliculas";
+
 }
 <div class="container">
     <div>
