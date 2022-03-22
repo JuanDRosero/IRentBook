@@ -60,19 +60,16 @@ namespace IRentBook.Controllers
         // GET: Usuarios/Edit/5
         public ActionResult Edit(int id)
         {
-            if (HttpContext.Session.GetString("Rol").Equals("Admin"))
+
+            FachadaUsuario fachada = new FachadaUsuario();
+            List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
+
+            IRentBook.Models.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
+            if (usuario != null)
             {
-                FachadaUsuario fachada = new FachadaUsuario();
-                List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
-
-                IRentBook.Models.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
-                if (usuario != null)
-                {
-                    return View(usuario);
-                }
-
-                return RedirectToAction("Index");
+                return View(usuario);
             }
+
             return RedirectToAction("Index", "Home");
 
         }
@@ -84,7 +81,14 @@ namespace IRentBook.Controllers
         {
             FachadaUsuario fachada = new FachadaUsuario();
             fachada.modificarU(usuario);
-            return RedirectToActionPermanent("Index");
+            if (HttpContext.Session.GetString("Rol").Equals("Admin"))
+            {
+                return RedirectToAction("Index");
+            }else if (HttpContext.Session.GetString("Rol").Equals("User"))
+            {
+                return RedirectToAction("Index","Usuario");
+            }
+            return RedirectToActionPermanent("Index","Home");
         }
 
         //[HttpDelete]
