@@ -6,7 +6,7 @@ using IRentBook.Models.Proxy.ProxyPelicula;
 
 namespace IRentBook.Models.Patron_Comando
 {
-    public class EditarPelicula
+    public class EditarPelicula: IComando
     {
         private Pelicula producto { get; set; }
         public EditarPelicula(Pelicula producto)

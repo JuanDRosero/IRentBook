@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IRentBook.Models.Proxy.ProxyPelicula;
+using IRentBook.Models.Proxy.ProxyGenero;
+using IRentBook.Models.Patron_Comando;
 
 namespace IRentBook.Controllers
 {
@@ -13,7 +16,21 @@ namespace IRentBook.Controllers
         // GET: Peliculas
         public ActionResult Index()
         {
-            return View();
+            //Index de libros
+            var rol = HttpContext.Session.GetString("Rol");
+            if (rol.Equals(""))
+            {
+                return RedirectToActionPermanent("Index", "Home");
+            }
+            MetodosPeliculas metodosPeliculas = new MetodosPeliculas();
+            MetodosGenero metodosGenero = new MetodosGenero();
+            List<Pelicula> peliculas = metodosPeliculas.leerPeliculas();
+            List<Genero> genero = metodosGenero.leerGenero();
+            foreach (var pelicula in peliculas)
+            {
+                pelicula.genero = genero.Where(e => e.id == Int32.Parse(pelicula.genero)).FirstOrDefault().nombre;
+            }
+            return View(peliculas);
         }
 
         // GET: Peliculas/Details/5
@@ -31,7 +48,9 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            Pelicula pelicula = null;//Aca hay que inicializar la lista de generos
+            Pelicula pelicula = new Pelicula();//Aca hay que inicializar la lista de generos
+            MetodosGenero metodosGenero = new MetodosGenero();
+            pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(metodosGenero));
             return View(pelicula);
         }
 
@@ -40,20 +59,22 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind("id,nombre,genero,duracion,director")] Pelicula pelicula)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            IComando agregarPelicula = new AgregarPelicula(pelicula);
+            ControlInventario invocador = new ControlInventario(agregarPelicula, null, null);
+            invocador.agregarProducto();
+
+            return RedirectToAction("Index");
         }
 
         // GET: Peliculas/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            MetodosPeliculas metodosPeliculas = new MetodosPeliculas();
+            MetodosGenero metodosGenero = new MetodosGenero();
+            var peliculas = metodosPeliculas.leerPeliculas();
+            var pelicula = peliculas.Where(e=>e.id == id).FirstOrDefault();
+            pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(metodosGenero));
+            return View(pelicula);
         }
 
         // POST: Peliculas/Edit/5
@@ -61,20 +82,37 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind("id,nombre,genero,duracion,director")] Pelicula pelicula)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            IComando editarPelicula = new EditarPelicula(pelicula);
+            ControlInventario invocador = new ControlInventario(null, editarPelicula, null);
+            invocador.editarProducto();
+
+            return RedirectToAction("Index");
         }
 
         // GET: Peliculas/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            MetodosPeliculas metodosPeliculas = new MetodosPeliculas();
+            var peliculas = metodosPeliculas.leerPeliculas();
+            var pelicula = peliculas.Where(e => e.id == id).FirstOrDefault();
+            IComando eliminarPelicula = new EliminarPelicula(pelicula);
+            ControlInventario invocador = new ControlInventario(null, null, eliminarPelicula);
+            invocador.eliminarProducto();
+
+            return RedirectToAction("Index");
+        }
+
+        private List<String> getListaG(MetodosGenero mg)
+        {
+            List<Genero> lg = mg.leerGenero();
+            List<String> lista = new List<string>();
+            var consulta = from genero in lg
+                           select genero.nombre;
+            foreach (var item in consulta)
+            {
+                lista.Add(item);
+            }
+            return lista;
         }
 
     }
