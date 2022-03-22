@@ -15,6 +15,7 @@ namespace IRentBook.Controllers
         {
             FachadaUsuario fachada = new FachadaUsuario();
             List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
+            var a = HttpContext.Session.GetString("Rol");
             if (HttpContext.Session.GetString("Rol").Equals("Admin"))
             {
                 return View(usuarios);  //Hay que pasarle como parametros los usuarios
@@ -34,7 +35,12 @@ namespace IRentBook.Controllers
         // GET: Usuarios/Create
         public ActionResult Create()
         {
-            return View();
+            if (HttpContext.Session.GetString("Rol").Equals("Admin"))
+            {
+                return View();  //Hay que pasarle como parametros los usuarios
+            }
+            
+            return RedirectToAction("Index", "Home");
         }
 
         // POST: Usuarios/Create
@@ -54,16 +60,21 @@ namespace IRentBook.Controllers
         // GET: Usuarios/Edit/5
         public ActionResult Edit(int id)
         {
-            FachadaUsuario fachada = new FachadaUsuario();
-            List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
-
-            IRentBook.Models.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
-            if (usuario!=null)
+            if (HttpContext.Session.GetString("Rol").Equals("Admin"))
             {
-                return View(usuario);
-            }
+                FachadaUsuario fachada = new FachadaUsuario();
+                List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
 
-            return RedirectToAction("Index");
+                IRentBook.Models.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
+                if (usuario != null)
+                {
+                    return View(usuario);
+                }
+
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index", "Home");
+
         }
 
         // POST: Usuarios/Edit/5
@@ -80,14 +91,20 @@ namespace IRentBook.Controllers
         // GET: Usuarios/Delete/5
         public ActionResult Delete(int id)
         {
-            FachadaUsuario fachada = new FachadaUsuario();
-            List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
-            IRentBook.Models.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
-            if (usuario!=null)
+            if (HttpContext.Session.GetString("Rol").Equals("Admin"))
             {
-                fachada.eliminarU(usuario);
+                FachadaUsuario fachada = new FachadaUsuario();
+                List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
+                IRentBook.Models.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
+                if (usuario != null)
+                {
+                    fachada.eliminarU(usuario);
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+
+            return RedirectToActionPermanent("Index", "Home");
+            
         }
 
         

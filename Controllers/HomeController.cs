@@ -29,20 +29,8 @@ namespace IRentBook.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login( string name, string password)
+        public IActionResult Login(string name, string password)
         {
-            MetodosEmpleados metodosEmpleados = new MetodosEmpleados();
-            FachadaUsuario fachadaUsuario = new FachadaUsuario();
-            var usuarios = fachadaUsuario.listarU();
-
-            foreach (var usuario in usuarios)
-            {
-                /*if ()
-                {
-
-                }*/
-            }
-
             if (password.Equals("123456789"))   //Redirige a la vista de usuario
             {
                 HttpContext.Session.SetString("Rol", "User");
@@ -60,7 +48,7 @@ namespace IRentBook.Controllers
                 _logger.LogInformation("No se ingreso un valor valido");
                 return RedirectToAction("Index");
             }
-            
+
             //hace falta redireccionar a la de usuario
         }
 
