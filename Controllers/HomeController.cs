@@ -24,6 +24,7 @@ namespace IRentBook.Controllers
         public IActionResult Index()
         {
             HttpContext.Session.SetString("Rol", "");
+            HttpContext.Session.SetInt32("Id", -1);
             return View();
         }
         [HttpPost]
@@ -45,11 +46,13 @@ namespace IRentBook.Controllers
             if (password.Equals("123456789"))   //Redirige a la vista de usuario
             {
                 HttpContext.Session.SetString("Rol", "User");
+                HttpContext.Session.SetInt32("Id", 1);
                 return RedirectToAction("Index", "Usuario");
             }
             else if (password.Equals("987654321"))
             {
                 HttpContext.Session.SetString("Rol", "Admin");
+                HttpContext.Session.SetInt32("Id", 2);
                 return RedirectToAction("Index", "Admin");
             }
             else

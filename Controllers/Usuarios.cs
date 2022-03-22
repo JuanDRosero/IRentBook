@@ -14,8 +14,15 @@ namespace IRentBook.Controllers
         public ActionResult Index()
         {
             FachadaUsuario fachada = new FachadaUsuario();
-            List<IRentBook.Models.Usuario> usuarios=fachada.listarU();
-            return View(usuarios);  //Hay que pasarle como parametros los usuarios
+            List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
+            if (HttpContext.Session.GetString("Rol").Equals("Admin"))
+            {
+                return View(usuarios);  //Hay que pasarle como parametros los usuarios
+            } else if (HttpContext.Session.GetString("Rol").Equals("User"))
+            {
+                RedirectToAction("Index", "Usuario");
+            }
+            return RedirectToAction("Index", "Home");//Si no hay una sesión iniciada
         }
 
         // GET: Usuarios/Details/5
