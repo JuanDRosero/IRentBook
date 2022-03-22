@@ -6,7 +6,7 @@ namespace IRentBook.Models
     public class Usuario: Persona
     {
 
-        [Required]
+        [Required(ErrorMessage = "El campo direccion es requerido")]
         [DisplayName("Dirección")]
         public string direccion { get; set; }
     }

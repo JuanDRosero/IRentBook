@@ -10,13 +10,14 @@ namespace IRentBook.Models
     public class Persona
     {
         public int id { get; set; }
-        [Required]
+        [Required(ErrorMessage ="El campo codigo es requerido")]
         [DisplayName("Codigo")]
         public int codigo { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo nombre es requerido")]
         [DisplayName("Nombre")]
         public string nombre { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo contraseña es requerido")]
+        [DataType(DataType.Password)]
         [DisplayName("Contraseña")]
         public string pass { get; set; }
     }

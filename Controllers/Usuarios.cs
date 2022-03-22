@@ -79,16 +79,24 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind("id,codigo,nombre,pass,direccion")] IRentBook.Models.Usuario usuario)
         {
-            FachadaUsuario fachada = new FachadaUsuario();
-            fachada.modificarU(usuario);
-            if (HttpContext.Session.GetString("Rol").Equals("Admin"))
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index");
-            }else if (HttpContext.Session.GetString("Rol").Equals("User"))
-            {
-                return RedirectToAction("Index","Usuario");
+                return View(usuario);
             }
-            return RedirectToActionPermanent("Index","Home");
+            else
+            {
+                FachadaUsuario fachada = new FachadaUsuario();
+                fachada.modificarU(usuario);
+                if (HttpContext.Session.GetString("Rol").Equals("Admin"))
+                {
+                    return RedirectToAction("Index");
+                }
+                else if (HttpContext.Session.GetString("Rol").Equals("User"))
+                {
+                    return RedirectToAction("Index", "Usuario");
+                }
+                return RedirectToActionPermanent("Index", "Home");
+            }
         }
 
         //[HttpDelete]
