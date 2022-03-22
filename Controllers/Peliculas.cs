@@ -13,6 +13,11 @@ namespace IRentBook.Controllers
 {
     public class Peliculas : Controller
     {
+        private readonly FactoryProducto fabrica;
+        public Peliculas()
+        {
+            fabrica = new FactoryProducto();
+        }
         // GET: Peliculas
         public ActionResult Index()
         {
@@ -48,7 +53,7 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            Pelicula pelicula = new Pelicula();//Aca hay que inicializar la lista de generos
+            var pelicula = fabrica.crearProducto('p');//Aca hay que inicializar la lista de generos
             MetodosGenero metodosGenero = new MetodosGenero();
             pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(metodosGenero));
             return View(pelicula);
