@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IRentBook.Models.Proxy.ProxyEmpleados;
 using IRentBook.Models.Fachada;
+using IRentBook.Models.Patron_Cadena;
 
 namespace IRentBook.Controllers
 {
@@ -29,18 +30,25 @@ namespace IRentBook.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string name, string password)
+        public IActionResult Login(int name, string password)
         {
-            if (password.Equals("123456789"))   //Redirige a la vista de usuario
+            IRentBook.Models.Patron_Cadena.Persona h1 = new IRentBook.Models.Patron_Cadena.Empleado();
+            IRentBook.Models.Patron_Cadena.Persona h2 = new IRentBook.Models.Patron_Cadena.Usuario();
+
+            h2.SetSucc(h1);
+
+            var p = h2.EncontrarUsEm(name, password);
+
+            if (p.GetType().Equals(new Usuario().GetType()))   //Redirige a la vista de usuario
             {
                 HttpContext.Session.SetString("Rol", "User");
-                HttpContext.Session.SetInt32("Id", 1);
+                HttpContext.Session.SetInt32("Id", p.id);
                 return RedirectToAction("Index", "Usuario");
             }
-            else if (password.Equals("987654321"))
+            else if (p.GetType().Equals(new Empleado().GetType()))
             {
                 HttpContext.Session.SetString("Rol", "Admin");
-                HttpContext.Session.SetInt32("Id", 2);
+                HttpContext.Session.SetInt32("Id", p.id);
                 return RedirectToAction("Index", "Admin");
             }
             else
