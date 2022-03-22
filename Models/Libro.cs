@@ -9,10 +9,10 @@ namespace IRentBook.Models
 {
     public class Libro: Producto
     {
-        [Required]
+        [Required(ErrorMessage ="El campo Paginas es requerido")]
         [DisplayName("# Páginas")]
         public int paginas { get; set; }
-        [Required]
+        [Required(ErrorMessage ="El campo Autores es requerido")]
         [DisplayName("Autores")]
         public  string autores { get; set; }
 

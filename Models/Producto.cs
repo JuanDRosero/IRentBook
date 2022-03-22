@@ -11,10 +11,10 @@ namespace IRentBook.Models
     public abstract class Producto
     {
         public int id{ get; set; }
-        [Required]
+        [Required(ErrorMessage ="El campo Nombre es requerido")]
         [DisplayName("Nombre")]
         public string nombre{ get; set; }
-        [Required]
+        [Required(ErrorMessage ="El campo Genero es requerido")]
         [DisplayName("Genero")]
         public string genero{ get; set; }
         public SelectList listaGeneros { get; set; }

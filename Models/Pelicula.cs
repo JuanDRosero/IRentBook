@@ -9,10 +9,10 @@ namespace IRentBook.Models
 {
     public class Pelicula : Producto
     {
-        [Required]
-        [DisplayName("Duración")]
+        [Required(ErrorMessage ="El campo Duración es reuqerido")]
+        [DisplayName("Duración (min)")]
         public int duracion { get; set; }
-        [Required]
+        [Required(ErrorMessage ="El campo director es requerido")]
         [DisplayName("Director")]
         public string director {  get; set; }
         public override string getAutor()
