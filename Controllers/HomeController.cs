@@ -30,33 +30,36 @@ namespace IRentBook.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(int name, string password)
+        public IActionResult Login(int codigoUsuario, string password)
         {
             IRentBook.Models.Patron_Cadena.Persona h1 = new IRentBook.Models.Patron_Cadena.Empleado();
             IRentBook.Models.Patron_Cadena.Persona h2 = new IRentBook.Models.Patron_Cadena.Usuario();
 
             h2.SetSucc(h1);
 
-            var p = h2.EncontrarUsEm(name, password);
-
-            if (p.GetType().Equals(new Usuario().GetType()))   //Redirige a la vista de usuario
-            {
-                HttpContext.Session.SetString("Rol", "User");
-                HttpContext.Session.SetInt32("Id", p.id);
-                return RedirectToAction("Index", "Usuario");
-            }
-            else if (p.GetType().Equals(new Empleado().GetType()))
-            {
-                HttpContext.Session.SetString("Rol", "Admin");
-                HttpContext.Session.SetInt32("Id", p.id);
-                return RedirectToAction("Index", "Admin");
-            }
-            else
+            var p = h2.EncontrarUsEm(codigoUsuario, password);
+            if (p == null)
             {
                 _logger.LogInformation("No se ingreso un valor valido");
                 return RedirectToAction("Index");
+            } else
+            {
+                if (p.GetType().Equals(new IRentBook.Models.Usuario().GetType()))   //Redirige a la vista de usuario
+                {
+                    HttpContext.Session.SetString("Rol", "User");
+                    HttpContext.Session.SetInt32("Id", p.id);
+                    return RedirectToAction("Index", "Usuario");
+                }
+                else if (p.GetType().Equals(new IRentBook.Models.Persona().GetType()))
+                {
+                    HttpContext.Session.SetString("Rol", "Admin");
+                    HttpContext.Session.SetInt32("Id", p.id);
+                    return RedirectToAction("Index", "Admin");
+                }
+                return RedirectToAction("Index");
             }
-
+            
+            
             //hace falta redireccionar a la de usuario
         }
 

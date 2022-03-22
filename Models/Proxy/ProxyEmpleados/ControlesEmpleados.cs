@@ -61,7 +61,7 @@ namespace IRentBook.Models.Proxy.ProxyEmpleados
         {
             //Intancia del singlenton
             var cadena = ConexionBD.Instance;
-            string command = "SELECT * FROM proyectopatrones.usuario;";
+            string command = "SELECT * FROM proyectopatrones.empleado;";
             List<Persona> listaEmpleados = new List<Persona>();
             var conexion = cadena.connection;
             try
