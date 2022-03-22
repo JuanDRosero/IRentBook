@@ -13,7 +13,13 @@ using IRentBook.Models.Patron_Comando;
 namespace IRentBook.Controllers
 {
     public class Libros : Controller
+
     {
+        private readonly FactoryProducto fabrica;
+        public Libros()
+        {
+            fabrica = new FactoryProducto();
+        }
         // GET: Productos
         public ActionResult Index()
         {
@@ -34,11 +40,7 @@ namespace IRentBook.Controllers
             return View(libros);
         }
 
-        // GET: Productos/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+  
 
         // GET: Productos/Create
         public ActionResult Create()
@@ -49,7 +51,7 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            var libro = new Libro();
+            var libro = fabrica.crearProducto('l');
             var mg = new MetodosGenero();
             libro.listaGeneros=new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(mg));
             return View(libro);
