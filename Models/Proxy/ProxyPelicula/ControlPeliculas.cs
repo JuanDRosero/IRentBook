@@ -49,10 +49,8 @@ namespace IRentBook.Models.Proxy.ProxyPelicula
         public override void eliminarPelicula(Pelicula pelicula)
         {
             //Intancia del singlenton
-            MetodosGenero mg = new MetodosGenero();
-            List<Genero> listaGeneros = mg.leerGenero();
             var cadena = ConexionBD.Instance;
-            string command = "DELETE FROM `proyectopatrones`.`pelicula` WHERE (`idPelicula` = '" + listaGeneros.Where(e => e.nombre == pelicula.genero).FirstOrDefault().id + "');";
+            string command = "DELETE FROM `proyectopatrones`.`pelicula` WHERE (`idPelicula` = '" + pelicula.id + "');";
             using (cadena.connection)
             {
                 using (MySqlCommand mySqlCommand = new MySqlCommand(command))
