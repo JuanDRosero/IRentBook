@@ -4,71 +4,56 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IRentBook.Models;
+using IRentBook.Models.Proxy.ProxyPrestamo;
+using IRentBook.Models.Fachada;
 
 namespace IRentBook.Controllers
 {
     public class Prestamos : Controller
     {
+        private delegate string TipoP(int id,int id2);
+        private delegate string NombreU(int id);
         // GET: Prestamos
         public ActionResult Index()
         {
-            return View();
-        }
-
-        // GET: Prestamos/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Prestamos/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Prestamos/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            TipoP getTipo = (int val, int val2) =>
+             {
+                 if (val != null)
+                 {
+                     return "Libro";
+                 }
+                 else
+                     return "Pelicula";
+             };
+            var mp = new MetodosPrestamos();
+            var fachada = new FachadaUsuario();
+            var usuarios = fachada.listarU();
+            NombreU getNombre = (int value) =>
+              {
+                  return usuarios.Find(e => e.id == value).nombre;
+              };
+            List<ModelPrestamoView> listaPrestamos = new List<ModelPrestamoView>();
+            var prestamos = mp.leerPrestamo();
+            foreach (var item in prestamos)
             {
-                return RedirectToAction(nameof(Index));
+                listaPrestamos.Add(new ModelPrestamoView()
+                {
+                    id = item.idPrestamo,
+                    tipoProducto = getTipo(item.idLibroP, item.idPeliculaP),
+                    nombreUsuario = getNombre(item.idUsuario)
+                });
             }
-            catch
-            {
-                return View();
-            }
+            listaPrestamos.OrderBy(e=>e.nombreUsuario);
+
+            /*
+            var consulta = from pres in listaPrestamos
+                           group pres by pres.nombreUsuario;
+            */
+            
+            return View(listaPrestamos);
         }
 
-        // GET: Prestamos/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Prestamos/Edit/5
-        [HttpPut]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        [HttpDelete]
-        // GET: Prestamos/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
     }
 }

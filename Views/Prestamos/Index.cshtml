@@ -1,5 +1,7 @@
-﻿@using Microsoft.AspNetCore.Http;
+﻿@model IEnumerable<IRentBook.Models.ModelPrestamoView>
+@using Microsoft.AspNetCore.Http;
 @{
+    ViewData["Title"] = "Prestamos";
     var rol = Context.Session.GetString("Rol");
     if (rol.Equals("Admin"))
     {
@@ -10,4 +12,52 @@
         Layout = "~/Views/Shared/_Layout-Usuarios.cshtml";
     }
 }
-<h1>Vista prestamos</h1>
+
+    <h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tipoProducto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nombreProducto)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.nombreUsuario)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tipoProducto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombreProducto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombreUsuario)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
