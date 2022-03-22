@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using IRentBook.Models.Proxy.ProxyEmpleados;
+using IRentBook.Models.Fachada;
 
 namespace IRentBook.Controllers
 {
@@ -28,6 +30,18 @@ namespace IRentBook.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login( string name, string password)
         {
+            MetodosEmpleados metodosEmpleados = new MetodosEmpleados();
+            FachadaUsuario fachadaUsuario = new FachadaUsuario();
+            var usuarios = fachadaUsuario.listarU();
+
+            foreach (var usuario in usuarios)
+            {
+                /*if ()
+                {
+
+                }*/
+            }
+
             if (password.Equals("123456789"))   //Redirige a la vista de usuario
             {
                 HttpContext.Session.SetString("Rol", "User");
