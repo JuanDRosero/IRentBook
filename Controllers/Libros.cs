@@ -1,14 +1,15 @@
-﻿using IRentBook.Models;
+﻿using IRentBook.Logica.Edu;
+using IRentBook.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IRentBook.Models.Proxy.ProxyPelicula;
+/*using IRentBook.Models.Proxy.ProxyPelicula;
 using IRentBook.Models.Proxy.ProxyLibros;
 using IRentBook.Models.Proxy.ProxyGenero;
-using IRentBook.Models.Patron_Comando;
+using IRentBook.Models.Patron_Comando;*/
 
 namespace IRentBook.Controllers
 {
@@ -16,9 +17,11 @@ namespace IRentBook.Controllers
 
     {
         private readonly FactoryProducto fabrica;
+        private readonly Orquestador orquestador;
         public Libros()
         {
             fabrica = new FactoryProducto();
+            orquestador = new Orquestador();
         }
         // GET: Productos
         public ActionResult Index()
@@ -29,10 +32,10 @@ namespace IRentBook.Controllers
             {
                 return RedirectToActionPermanent("Index", "Home");
             }
-            MetodosLibro ml = new MetodosLibro();
-            MetodosGenero mg = new MetodosGenero();
-            List<Libro> libros = ml.leerLibros();
-            List<Genero> generos = mg.leerGenero();
+            //MetodosLibro ml = new MetodosLibro();
+            //MetodosGenero mg = new MetodosGenero();
+            List<Api.Edu.Modelo.Libro> libros = orquestador.ModerarLeerL(new Api.Edu.Modelo.Libro());
+            List<Api.Edu.Modelo.Genero> generos = orquestador.ModerarLeerG();
             foreach (var libro in libros)
             {
                 libro.genero = generos.Where(e => e.id == Int32.Parse(libro.genero)).FirstOrDefault().nombre;
@@ -52,23 +55,20 @@ namespace IRentBook.Controllers
                 return RedirectToActionPermanent("Index", "Home");
             }
             var libro = fabrica.crearProducto('l');
-            var mg = new MetodosGenero();
-            libro.listaGeneros=new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(mg));
+            libro.listaGeneros=new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG());
             return View(libro);
         }
 
         // POST: Productos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("id,nombre,genero, paginas,autores")]Libro libro)
+        public ActionResult Create([Bind("id,nombre,genero, paginas,autores")]Api.Edu.Modelo.Libro libro)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            IComando agregarLibro = new AgregarLibro(libro);
-            ControlInventario invocador = new ControlInventario(agregarLibro,null,null);
-            invocador.agregarProducto();
+            orquestador.ModerarCrear(libro);
             return RedirectToAction("Index");
         }
 
@@ -81,14 +81,12 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            MetodosLibro ml = new MetodosLibro();
-            List<Libro> libros = ml.leerLibros();
-            Libro libro =libros.Where(e=>e.id==id).FirstOrDefault();
+            List<Api.Edu.Modelo.Libro> libros = orquestador.ModerarLeerL(null);
+            Api.Edu.Modelo.Libro libro =libros.Where(e=>e.id==id).FirstOrDefault();
             
             if (libro!=null)
             {
-                var mg = new MetodosGenero();
-                libro.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(mg));
+                libro.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG());
                 return View(libro);
             }
             return RedirectToAction("Index");
@@ -97,13 +95,14 @@ namespace IRentBook.Controllers
         // POST: Productos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("id,nombre,genero, paginas,autores")] Libro libro)
+        public ActionResult Edit([Bind("id,nombre,genero, paginas,autores")] Api.Edu.Modelo.Libro libro)
         {
             if (libro != null && ModelState.IsValid)
             {
-                IComando editarLibro = new EditarLibro(libro);
+                /*IComando editarLibro = new EditarLibro(libro);
                 ControlInventario invocador = new ControlInventario(null,editarLibro,null);
-                invocador.editarProducto();
+                invocador.editarProducto();*/
+                orquestador.ModerarEditar(libro);
             }
             return RedirectToAction("Index");
         }
@@ -117,17 +116,14 @@ namespace IRentBook.Controllers
                 //Un usuario no puede usar este metodo
                 return RedirectToActionPermanent("Index", "Home");
             }
-            MetodosLibro ml = new MetodosLibro();
-            List<Libro> libros = ml.leerLibros();
-            Libro libro = libros.Where(e => e.id == id).FirstOrDefault();
-            IComando eliminarLibro = new EliminarLibro(libro);
-            ControlInventario invocador = new ControlInventario(null,null, eliminarLibro);
-            invocador.eliminarProducto();
+            List<Api.Edu.Modelo.Libro> libros = orquestador.ModerarLeerL(null);
+            Api.Edu.Modelo.Libro libro = libros.Where(e => e.id == id).FirstOrDefault();
+            orquestador.ModerarEliminar(libro);
             return RedirectToAction("Index");
         }
-        private List<String> getListaG(MetodosGenero mg)
+        private List<String> getListaG()
         {
-            List<Genero> lg = mg.leerGenero();
+            List<Api.Edu.Modelo.Genero> lg = orquestador.ModerarLeerG();
             List<String> lista = new List<string>();
             var consulta = from genero in lg
                            select genero.nombre;

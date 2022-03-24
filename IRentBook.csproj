@@ -17,4 +17,12 @@
     <PackageReference Include="MySql.Data" Version="8.0.28" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logica\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ComponentesIRB\Api\Api.csproj" />
+  </ItemGroup>
+
 </Project>

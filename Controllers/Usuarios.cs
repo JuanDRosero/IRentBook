@@ -1,20 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using IRentBook.Models.Fachada;
+//using IRentBook.Models.Fachada;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IRentBook.Logica.Edu;
 
 namespace IRentBook.Controllers
 {
     public class Usuarios : Controller
     {
+        private readonly Orquestador orquestador;
         // GET: Usuarios
         public ActionResult Index()
         {
-            FachadaUsuario fachada = new FachadaUsuario();
-            List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
+            //FachadaUsuario fachada = new FachadaUsuario();
+            List<Api.Edu.Modelo.Usuario> usuarios = orquestador.ModerarLeerU();
             var a = HttpContext.Session.GetString("Rol");
             if (HttpContext.Session.GetString("Rol").Equals("Admin"))
             {
@@ -46,14 +48,15 @@ namespace IRentBook.Controllers
         // POST: Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("id,codigo,nombre,pass,direccion")]IRentBook.Models.Usuario usuario)
+        public ActionResult Create([Bind("id,codigo,nombre,pass,direccion")] Api.Edu.Modelo.Usuario usuario)
         {
             if (!ModelState.IsValid)    //Revisar pq no está validando el modelo
             {
                 return View();
             }
-            FachadaUsuario fachada = new FachadaUsuario();
-            fachada.agregarU(usuario);
+            //FachadaUsuario fachada = new FachadaUsuario();
+            //fachada.agregarU(usuario);
+            orquestador.ModerarCrear(usuario);
             return RedirectToAction("Index");
         }
 
@@ -61,10 +64,10 @@ namespace IRentBook.Controllers
         public ActionResult Edit(int id)
         {
 
-            FachadaUsuario fachada = new FachadaUsuario();
-            List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
+            //FachadaUsuario fachada = new FachadaUsuario();
+            List<Api.Edu.Modelo.Usuario> usuarios = orquestador.ModerarLeerU();
 
-            IRentBook.Models.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
+            Api.Edu.Modelo.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
             if (usuario != null)
             {
                 return View(usuario);
@@ -77,7 +80,7 @@ namespace IRentBook.Controllers
         // POST: Usuarios/Edit/5
         [HttpPost]   //->Revisar como se pine el parametro put en los form
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("id,codigo,nombre,pass,direccion")] IRentBook.Models.Usuario usuario)
+        public ActionResult Edit([Bind("id,codigo,nombre,pass,direccion")] Api.Edu.Modelo.Usuario usuario)
         {
             if (!ModelState.IsValid)
             {
@@ -85,8 +88,8 @@ namespace IRentBook.Controllers
             }
             else
             {
-                FachadaUsuario fachada = new FachadaUsuario();
-                fachada.modificarU(usuario);
+                //FachadaUsuario fachada = new FachadaUsuario();
+                orquestador.ModerarEditar(usuario);
                 if (HttpContext.Session.GetString("Rol").Equals("Admin"))
                 {
                     return RedirectToAction("Index");
@@ -105,12 +108,13 @@ namespace IRentBook.Controllers
         {
             if (HttpContext.Session.GetString("Rol").Equals("Admin"))
             {
-                FachadaUsuario fachada = new FachadaUsuario();
-                List<IRentBook.Models.Usuario> usuarios = fachada.listarU();
-                IRentBook.Models.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
+                //FachadaUsuario fachada = new FachadaUsuario();
+                List<Api.Edu.Modelo.Usuario> usuarios = orquestador.ModerarLeerU();
+                Api.Edu.Modelo.Usuario usuario = usuarios.Where(e => e.id == id).FirstOrDefault();
                 if (usuario != null)
                 {
-                    fachada.eliminarU(usuario);
+                    //fachada.eliminarU(usuario);
+                    orquestador.ModerarEliminar(usuario);
                 }
                 return RedirectToAction("Index");
             }

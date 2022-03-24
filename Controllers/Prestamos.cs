@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using IRentBook.Models;
-using IRentBook.Models.Proxy.ProxyPrestamo;
+/*using IRentBook.Models.Proxy.ProxyPrestamo;
 using IRentBook.Models.Fachada;
 using IRentBook.Models.Proxy.ProxyPelicula;
-using IRentBook.Models.Proxy.ProxyLibros;
+using IRentBook.Models.Proxy.ProxyLibros;*/
+using IRentBook.Logica.Edu;
 
 namespace IRentBook.Controllers
 {
@@ -17,6 +18,7 @@ namespace IRentBook.Controllers
         private delegate string TipoP(int? id,int? id2);
         private delegate string NombreU(int id);
         private delegate string NombreP(int? id, int? id2, string tipo);
+        private readonly Orquestador orquestador;
         // GET: Prestamos
         public ActionResult Index()
         {
@@ -29,20 +31,20 @@ namespace IRentBook.Controllers
                  else
                      return "Pelicula";
              };
-            var mp = new MetodosPrestamos();
-            var fachada = new FachadaUsuario();
-            var usuarios = fachada.listarU();
+            /*var mp = new MetodosPrestamos();
+            var fachada = new FachadaUsuario();*/
+            var usuarios = orquestador.ModerarLeerU();
             NombreU getNombre = (int value) =>
               {
                   return usuarios.Find(e => e.id == value).nombre;
               };
             List<ModelPrestamoView> listaPrestamos = new List<ModelPrestamoView>();
 
-            var mPelicula = new MetodosPeliculas();
-            var ml = new MetodosLibro();
+            /*var mPelicula = new MetodosPeliculas();
+            var ml = new MetodosLibro();*/
 
-            var peliculas = mPelicula.leerPeliculas();
-            var libros = ml.leerLibros();
+            var peliculas = orquestador.ModerarLeerP(null);
+            var libros = orquestador.ModerarLeerL(null);
             NombreP getNombreP = (int? id, int? id2, string tipo) =>
             {
                 if (tipo == "Libro")
@@ -55,8 +57,8 @@ namespace IRentBook.Controllers
                 }
             };
 
-            var prestamos = mp.leerPrestamo();
-            foreach (var item in prestamos)
+            var prestamos = orquestador.ModerarLeerP(null);
+            /*foreach (var item in prestamos)
             {
                 listaPrestamos.Add(new ModelPrestamoView()
                 {
@@ -66,7 +68,7 @@ namespace IRentBook.Controllers
                     nombreUsuario = getNombre(item.idUsuario)
                 });
             }
-            listaPrestamos.OrderBy(e=>e.nombreUsuario);
+            listaPrestamos.OrderBy(e=>e.nombreUsuario);*/
 
             /*
             var consulta = from pres in listaPrestamos

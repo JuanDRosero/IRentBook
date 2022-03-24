@@ -5,15 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IRentBook.Models.Proxy.ProxyPelicula;
+/*using IRentBook.Models.Proxy.ProxyPelicula;
 using IRentBook.Models.Proxy.ProxyGenero;
-using IRentBook.Models.Patron_Comando;
+using IRentBook.Models.Patron_Comando;*/
+using IRentBook.Logica.Edu;
 
 namespace IRentBook.Controllers
 {
     public class Peliculas : Controller
     {
         private readonly FactoryProducto fabrica;
+        private readonly Orquestador orquestador;
         public Peliculas()
         {
             fabrica = new FactoryProducto();
@@ -27,10 +29,9 @@ namespace IRentBook.Controllers
             {
                 return RedirectToActionPermanent("Index", "Home");
             }
-            MetodosPeliculas metodosPeliculas = new MetodosPeliculas();
-            MetodosGenero metodosGenero = new MetodosGenero();
-            List<Pelicula> peliculas = metodosPeliculas.leerPeliculas();
-            List<Genero> genero = metodosGenero.leerGenero();
+
+            List<Api.Edu.Modelo.Pelicula> peliculas = orquestador.ModerarLeerP(null);
+            List<Api.Edu.Modelo.Genero> genero = orquestador.ModerarLeerG();
             foreach (var pelicula in peliculas)
             {
                 pelicula.genero = genero.Where(e => e.id == Int32.Parse(pelicula.genero)).FirstOrDefault().nombre;
@@ -54,36 +55,32 @@ namespace IRentBook.Controllers
                 return RedirectToActionPermanent("Index", "Home");
             }
             var pelicula = fabrica.crearProducto('p');//Aca hay que inicializar la lista de generos
-            MetodosGenero metodosGenero = new MetodosGenero();
-            pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(metodosGenero));
+            //MetodosGenero metodosGenero = new MetodosGenero();
+            pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG());
             return View(pelicula);
         }
 
         // POST: Peliculas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("id,nombre,genero,duracion,director")] Pelicula pelicula)
+        public ActionResult Create([Bind("id,nombre,genero,duracion,director")] Api.Edu.Modelo.Pelicula pelicula)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            IComando agregarPelicula = new AgregarPelicula(pelicula);
-            ControlInventario invocador = new ControlInventario(agregarPelicula, null, null);
-            invocador.agregarProducto();
+            orquestador.ModerarCrear(pelicula);
             return RedirectToAction("Index");
         }
 
         // GET: Peliculas/Edit/5
         public ActionResult Edit(int id)
         {
-            MetodosPeliculas metodosPeliculas = new MetodosPeliculas();
-            MetodosGenero metodosGenero = new MetodosGenero();
-            var peliculas = metodosPeliculas.leerPeliculas();
+            var peliculas = orquestador.ModerarLeerP(null);
             var pelicula = peliculas.Where(e=>e.id == id).FirstOrDefault();
             if (pelicula!=null)
             {
-                pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG(metodosGenero));
+                pelicula.listaGeneros = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(getListaG());
                 return View(pelicula);
             }
             return RedirectToAction("Index");
@@ -92,37 +89,34 @@ namespace IRentBook.Controllers
         // POST: Peliculas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind("id,nombre,genero,duracion,director")] Pelicula pelicula)
+        public ActionResult Edit([Bind("id,nombre,genero,duracion,director")] Api.Edu.Modelo.Pelicula pelicula)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            IComando editarPelicula = new EditarPelicula(pelicula);
-            ControlInventario invocador = new ControlInventario(null, editarPelicula, null);
-            invocador.editarProducto();
-
+            orquestador.ModerarEditar(pelicula);
             return RedirectToAction("Index");
         }
 
         // GET: Peliculas/Delete/5
         public ActionResult Delete(int id)
         {
-            MetodosPeliculas metodosPeliculas = new MetodosPeliculas();
-            var peliculas = metodosPeliculas.leerPeliculas();
+            var peliculas = orquestador.ModerarLeerP(null);
             var pelicula = peliculas.Where(e => e.id == id).FirstOrDefault();
             if (pelicula!=null)
             {
-                IComando eliminarPelicula = new EliminarPelicula(pelicula);
+                /*IComando eliminarPelicula = new EliminarPelicula(pelicula);
                 ControlInventario invocador = new ControlInventario(null, null, eliminarPelicula);
-                invocador.eliminarProducto();
+                invocador.eliminarProducto();*/
+                orquestador.ModerarEliminar(pelicula);
             }
             return RedirectToAction("Index");
         }
 
-        private List<String> getListaG(MetodosGenero mg)
+        private List<String> getListaG()
         {
-            List<Genero> lg = mg.leerGenero();
+            List<Api.Edu.Modelo.Genero> lg = orquestador.ModerarLeerG();
             List<String> lista = new List<string>();
             var consulta = from genero in lg
                            select genero.nombre;
